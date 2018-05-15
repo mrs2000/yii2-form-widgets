@@ -33,6 +33,6 @@ $form = ActiveForm::begin([
     'fieldClass' => 'mrssoft\formwidgets\ActiveField'
 ]);
 
-$form->field($order, 'name', ['inputOptions' => ['required' => '']])->widget(FieldFIO::className());
-$form->field($order, 'name', ['inputOptions' => ['required' => '']])->widget(FieldPhone::className());
+$form->field($order, 'name')->widget(FieldFIO::class);
+$form->field($order, 'phone')->widget(FieldPhone::class);
 ```

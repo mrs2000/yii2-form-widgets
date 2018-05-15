@@ -2,7 +2,6 @@
 
 namespace mrssoft\formwidgets;
 
-use Yii;
 use yii\helpers\Html;
 
 class ActiveField extends \yii\bootstrap\ActiveField

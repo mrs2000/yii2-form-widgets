@@ -17,10 +17,13 @@ class FieldPhone extends InputWidget
             'placeholder' => '11 цифр',
             'pattern' => '\d{10,11}',
             'title' => '11 цифр номера',
-            'maxlenght' => 10
         ], $this->options);
 
-        echo Html::activeInput($this->inputType, $this->model, $this->attribute, $options);
+        if ($this->model === null) {
+            echo Html::input($this->inputType, $this->name, $this->value, $options);
+        } else {
+            echo Html::activeInput($this->inputType, $this->model, $this->attribute, $options);
+        }
 
         $id = $this->options['id'];
         $js = "$('#$id').blur(function() {
