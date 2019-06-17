@@ -20,23 +20,20 @@ class PhoneValidator extends Validator
     public function validateAttribute($model, $attribute)
     {
         $model->{$attribute} = (string)preg_replace('/\D/', '', $model->{$attribute});
-        $lenght = mb_strlen($model->{$attribute} );
+        $lenght = mb_strlen($model->{$attribute});
         if ($lenght < 10 || $lenght > 11) {
             $this->addError($model, $attribute, $this->message);
         }
 
         if ($this->returnLenght !== null && $lenght != $this->returnLenght) {
-            $model->{$attribute} = substr($model->{$attribute} , $lenght - $this->returnLenght);
+            $model->{$attribute} = substr($model->{$attribute}, $lenght - $this->returnLenght);
         }
     }
 
     public function clientValidateAttribute($model, $attribute, $view)
     {
-        $message = json_encode($this->message, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        return <<<JS
-if (value.length < 10 || value.length > 11) {
-    messages.push($message);
-}
-JS;
+        $message = $this->formatMessage($this->message, ['attribute' => $model->getAttributeLabel($attribute)]);
+        $message = json_encode($message, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        return "if (value.length < 10 || value.length > 11) { messages.push($message); }";
     }
 }

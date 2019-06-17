@@ -1,6 +1,6 @@
 {
   "name": "mrssoft/yii2-form-widgets",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Yii2 widgets for form fields",
   "type": "yii2-extension",
   "keywords": [
