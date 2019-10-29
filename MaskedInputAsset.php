@@ -1,6 +1,6 @@
 <?php
 
-namespace app\assets;
+namespace mrssoft\formwidgets;
 
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;

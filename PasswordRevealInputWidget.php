@@ -1,6 +1,6 @@
 <?php
 
-namespace app\widgets;
+namespace mrssoft\formwidgets;
 
 use yii\bootstrap\Html;
 use yii\bootstrap\InputWidget;

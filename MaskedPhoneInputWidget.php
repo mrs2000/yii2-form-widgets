@@ -1,11 +1,9 @@
 <?php
 
-namespace app\widgets;
+namespace mrssoft\formwidgets;
 
-use app\assets\MaskedInputAsset;
 use yii\bootstrap\Html;
 use yii\bootstrap\InputWidget;
-use yii\web\JqueryAsset;
 
 /**
  * Поле для ввода телеофна с маской в формате: +7(983)413-55-66

@@ -1,7 +1,7 @@
 Yii2 Form Widgets
 =================
 [![Latest Stable Version](https://img.shields.io/packagist/v/mrssoft/yii2-form-widgets.svg)](https://packagist.org/packages/mrssoft/yii2-form-widgets)
-![PHP](https://img.shields.io/php-v/yii2-form-widgets.svg)
+![PHP](https://img.shields.io/packagist/php-v/mrssoft/yii2-form-widgets.svg)
 ![Total Downloads](https://img.shields.io/packagist/dt/mrssoft/yii2-form-widgets.svg)
 
 Yii2 widgets for form fields
