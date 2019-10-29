@@ -34,6 +34,6 @@ class PhoneValidator extends Validator
     {
         $message = $this->formatMessage($this->message, ['attribute' => $model->getAttributeLabel($attribute)]);
         $message = json_encode($message, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        return "if (value.length < 10 || value.length > 11) { messages.push($message); }";
+        return "value = value.replace(/\D/g, ''); if (value.length < 10 || value.length > 11) { messages.push($message); }";
     }
 }

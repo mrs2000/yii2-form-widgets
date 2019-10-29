@@ -4,9 +4,10 @@ namespace mrssoft\formwidgets;
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\InputWidget;
 
-class FieldPhone extends InputWidget
+class PhoneInputWidget extends InputWidget
 {
     public $inputType = 'tel';
 
@@ -31,6 +32,6 @@ class FieldPhone extends InputWidget
             $(this).val(val);
         });";
 
-        $this->view->registerJs($js, \yii\web\View::POS_READY);
+        $this->view->registerJs($js, View::POS_READY);
     }
 }

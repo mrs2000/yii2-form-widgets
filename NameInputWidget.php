@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\InputWidget;
 
-class FieldFIO extends InputWidget
+class NameInputWidget extends InputWidget
 {
     public $requiredName2 = true;
 
