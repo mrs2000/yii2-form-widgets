@@ -11,18 +11,14 @@ class PhoneValidator extends Validator
 {
     /**
      * Return length of phone number (default - null, do not crop phone number)
-     * @var int
      */
-    public $returnLenght;
+    public int $returnLenght = 0;
 
-    /**
-     * @var bool
-     */
-    public $checkNine = true;
+    public bool $checkNine = true;
 
     public $message = 'Поле «{attribute}» должно содержать 10 или 11 цифр номера.';
 
-    public $wrongNineMessage = 'Неверный формат номера телефона.';
+    public string $wrongNineMessage = 'Неверный формат номера телефона.';
 
     public function validateAttribute($model, $attribute)
     {
@@ -30,9 +26,7 @@ class PhoneValidator extends Validator
         $lenght = mb_strlen($result);
         if ($lenght < 10 || $lenght > 11) {
             $this->addError($model, $attribute, $this->message);
-        }
-
-        if ($this->returnLenght && $lenght != $this->returnLenght) {
+        } else if ($this->returnLenght && $lenght != $this->returnLenght) {
             $result = substr($result, $lenght - $this->returnLenght);
             if ($this->checkNine) {
                 $pos = $this->returnLenght == 10 ? 0 : 1;
@@ -66,7 +60,7 @@ class PhoneValidator extends Validator
 JS;
     }
 
-    private function formatClientMessage($model, $attribute, $message)
+    private function formatClientMessage($model, $attribute, $message): string
     {
         $message = $this->formatMessage($message, [
             'attribute' => $model->getAttributeLabel($attribute)
