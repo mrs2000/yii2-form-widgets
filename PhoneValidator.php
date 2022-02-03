@@ -20,23 +20,26 @@ class PhoneValidator extends Validator
 
     public string $wrongNineMessage = 'Неверный формат номера телефона.';
 
+    public bool $required = true;
+
     public function validateAttribute($model, $attribute)
     {
         $result = (string)preg_replace('/\D/', '', $model->{$attribute});
-        $lenght = mb_strlen($result);
-        if ($lenght < 10 || $lenght > 11) {
-            $this->addError($model, $attribute, $this->message);
-        } else if ($this->returnLenght && $lenght != $this->returnLenght) {
-            $result = substr($result, $lenght - $this->returnLenght);
-            if ($this->checkNine) {
-                $pos = $this->returnLenght == 10 ? 0 : 1;
-                if (mb_substr($result, $pos, 1) != 9) {
-                    $this->addError($model, $attribute, $this->wrongNineMessage);
+        if (empty($result) === false || $this->required) {
+            $lenght = mb_strlen($result);
+            if ($lenght < 10 || $lenght > 11) {
+                $this->addError($model, $attribute, $this->message);
+            } else if ($this->returnLenght && $lenght != $this->returnLenght) {
+                $result = substr($result, $lenght - $this->returnLenght);
+                if ($this->checkNine) {
+                    $pos = $this->returnLenght == 10 ? 0 : 1;
+                    if (mb_substr($result, $pos, 1) != 9) {
+                        $this->addError($model, $attribute, $this->wrongNineMessage);
+                    }
                 }
             }
+            $model->{$attribute} = $result;
         }
-
-        $model->{$attribute} = $result;
     }
 
     public function clientValidateAttribute($model, $attribute, $view)
@@ -45,16 +48,19 @@ class PhoneValidator extends Validator
         $wrongNineMessage = $this->formatClientMessage($model, $attribute, $this->wrongNineMessage);
 
         $checkNine = $this->checkNine;
+        $required = $this->required;
 
         return <<<JS
             value = value.replace(/\D/g, ''); 
-            if (value.length < 10 || value.length > 11) { 
-                messages.push($message);
-            }
-            if ($checkNine) {
-                const pos = value.length == 10 ? 0 : 1;
-                if (value.substr(pos, 1) != 9) {
-                    messages.push($wrongNineMessage);
+            if (value.length || $required) {
+                if (value.length < 10 || value.length > 11) { 
+                    messages.push($message);
+                }
+                if ($checkNine) {
+                    const pos = value.length == 10 ? 0 : 1;
+                    if (value.substr(pos, 1) != 9) {
+                        messages.push($wrongNineMessage);
+                    }
                 }
             }
 JS;
