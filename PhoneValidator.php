@@ -47,16 +47,16 @@ class PhoneValidator extends Validator
         $message = $this->formatClientMessage($model, $attribute, $this->message);
         $wrongNineMessage = $this->formatClientMessage($model, $attribute, $this->wrongNineMessage);
 
-        $checkNine = $this->checkNine;
-        $required = $this->required;
+        $checkNine = $this->checkNine ? 1 : 0;
+        $required = $this->required ? 1 : 0;
 
         return <<<JS
             value = value.replace(/\D/g, ''); 
-            if (value.length || $required) {
+            if (value.length || $required ) {
                 if (value.length < 10 || value.length > 11) { 
                     messages.push($message);
                 }
-                if ($checkNine) {
+                if ( $checkNine ) {
                     const pos = value.length == 10 ? 0 : 1;
                     if (value.substr(pos, 1) != 9) {
                         messages.push($wrongNineMessage);
