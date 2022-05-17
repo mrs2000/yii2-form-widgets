@@ -16,6 +16,8 @@ class PhoneValidator extends Validator
 
     public bool $checkNine = true;
 
+    public array $codes = [];
+
     public $message = 'Поле «{attribute}» должно содержать 10 или 11 цифр номера.';
 
     public string $wrongNineMessage = 'Неверный формат номера телефона.';
@@ -34,7 +36,16 @@ class PhoneValidator extends Validator
                 if ($this->checkNine) {
                     $pos = $this->returnLenght == 10 ? 0 : 1;
                     if (mb_substr($result, $pos, 1) != 9) {
-                        $this->addError($model, $attribute, $this->wrongNineMessage);
+                        $priz = true;
+                        foreach ($this->codes as $code) {
+                            if (str_starts_with($result, $code)) {
+                                $priz = false;
+                                break;
+                            }
+                        }
+                        if ($priz) {
+                            $this->addError($model, $attribute, $this->wrongNineMessage);
+                        }
                     }
                 }
             }
@@ -49,17 +60,20 @@ class PhoneValidator extends Validator
 
         $checkNine = $this->checkNine ? 1 : 0;
         $required = $this->required ? 1 : 0;
+        $codes = implode(',', array_map(static fn($e) => "'$e'", $this->codes));
 
         return <<<JS
-            value = value.replace(/\D/g, ''); 
+            value = value.replace(/\D/g, '')
             if (value.length || $required ) {
                 if (value.length < 10 || value.length > 11) { 
-                    messages.push($message);
+                    messages.push($message)
                 }
                 if ( $checkNine ) {
                     const pos = value.length == 10 ? 0 : 1;
-                    if (value.substr(pos, 1) != 9) {
-                        messages.push($wrongNineMessage);
+                    if (value.substring(pos, pos + 1) != '9') {
+                        if ([$codes].some(code => value.startsWith(code, pos)) === false) {
+                            messages.push($wrongNineMessage)
+                        }
                     }
                 }
             }

@@ -1,6 +1,6 @@
 {
   "name": "mrssoft/yii2-form-widgets",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Yii2 widgets for form fields",
   "type": "yii2-extension",
   "keywords": [
@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4.0 | 8.*",
+    "php": ">=8.0",
     "yiisoft/yii2": "*",
     "bower-asset/jquery.maskedinput": "*"
   },
