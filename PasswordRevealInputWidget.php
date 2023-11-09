@@ -59,35 +59,68 @@ class PasswordRevealInputWidget extends InputWidget
             echo Html::endTag('div');
 
             $js = <<<JS
-            const input = $('#$inputId');
+
+            function generateStrongPassword(length = 9, available_sets = 'luds') {
+                let sets = []
+                if (available_sets.includes('l')) {
+                    sets.push('abcdefghjkmnpqrstuvwxyz')
+                }
+                if (available_sets.includes('u')) {
+                    sets.push('ABCDEFGHJKMNPQRSTUVWXYZ')
+                }
+                if (available_sets.includes('d')) {
+                    sets.push('23456789')
+                }
+                if (available_sets.includes('s')) {
+                    sets.push('!@#%&*?')
+                }
+            
+                let all = ''
+                let password = ''
+                for (let index in sets) {
+                    const set = sets[index]
+                    const rand = parseInt(Math.random() * set.length)
+                    password += set.split('')[rand]
+                    all += set
+                }
+            
+                const all_a = all.split('')
+                for (let i = 0; i < length - sets.length; i++) {
+                    const rand =  parseInt(Math.random() * all_a.length)
+                    password += all_a[rand]
+                }
+            
+                return shuffle(password)
+            }
+            
+            function shuffle(string) {
+                const parts = string.split('')
+                for (let i = parts.length; i > 0;) {
+                    const random = parseInt(Math.random() * i)
+                    const temp = parts[--i]
+                    parts[i] = parts[random]
+                    parts[random] = temp
+                }
+                return parts.join('')
+            }
+                        
+            const input = $('#$inputId')
             $('#$buttonRevealId').on('click', function () {
                 if ($(this).hasClass('active')) {
-                    $(this).removeClass('active');
-                    input.attr('type', 'password');
+                    $(this).removeClass('active')
+                    input.attr('type', 'password')
                 } else {
-                    $(this).addClass('active');
-                    input.attr('type', 'text');
+                    $(this).addClass('active')
+                    input.attr('type', 'text')
                 }
-            });
+            })
             $('#$buttonGenerateId').on('click', function () {
                 if (input.attr('type') === 'password') {
-                    $('#$buttonRevealId').addClass('active');
-                    input.attr('type', 'text');
+                    $('#$buttonRevealId').addClass('active')
+                    input.attr('type', 'text')
                 }
-                input.val();
-                let pwd = '',
-                    symbols = '$this->passwordSymbols',
-                    lenght = symbols.length;
-                for (let i = 0; i < $this->passwordLenght; i++) {
-                    let random = Math.floor(Math.random() * lenght);
-                    let char = symbols.substr(random, 1);
-                    if (Math.random() > 0.5) {
-                        char = char.toUpperCase();
-                    }
-                    pwd += char;
-                }
-                input.val(pwd);
-            });
+                input.val(generateStrongPassword(8))
+            })
 JS;
             $this->view->registerJs($js);
         }
